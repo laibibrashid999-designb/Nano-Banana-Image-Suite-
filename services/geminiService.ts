@@ -1,4 +1,5 @@
-import { GoogleGenAI, Modality, GenerateContentResponse } from '@google/genai';
+// FIX: Import GenerateImagesResponse to correctly type the response from `generateImages`.
+import { GoogleGenAI, Modality, GenerateContentResponse, GenerateImagesResponse } from '@google/genai';
 import { FaceLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
 import type { UploadedImage } from '../types';
 
@@ -125,7 +126,8 @@ const generateSingleImageWithNanoBanana = async (
   aiClient: GoogleGenAI,
   promptParts: ({ text: string } | { inlineData: { data: string; mimeType: string } })[],
 ): Promise<string> => {
-  const model = 'gemini-2.5-flash-image-preview';
+  // FIX: Updated model name to 'gemini-2.5-flash-image' as per Gemini API guidelines.
+  const model = 'gemini-2.5-flash-image';
   
   const result = await withTimeout<GenerateContentResponse>(aiClient.models.generateContent({
     model: model,
@@ -171,7 +173,8 @@ export const generateImageFromText = async (
   const model = 'imagen-4.0-generate-001';
 
   try {
-    const response = await withTimeout(aiClient.models.generateImages({
+    // FIX: Explicitly type the response to resolve 'property does not exist on type unknown' errors.
+    const response = await withTimeout<GenerateImagesResponse>(aiClient.models.generateImages({
       model,
       prompt,
       config: {
@@ -207,7 +210,8 @@ export const prepareModelImage = async (
   count: 1 | 2,
 ): Promise<string[]> => { // Returns data URL
   const aiClient = getAiClient(apiKey);
-  const model = 'gemini-2.5-flash-image-preview';
+  // FIX: Updated model name to 'gemini-2.5-flash-image' as per Gemini API guidelines.
+  const model = 'gemini-2.5-flash-image';
   
   const prompts = [
     {
@@ -261,7 +265,8 @@ const generateCleanClothingImage = async (
   clothingImage?: UploadedImage | null
 ): Promise<UploadedImage> => {
   const aiClient = getAiClient(apiKey);
-  const model = 'gemini-2.5-flash-image-preview';
+  // FIX: Updated model name to 'gemini-2.5-flash-image' as per Gemini API guidelines.
+  const model = 'gemini-2.5-flash-image';
   const promptParts: ({ text: string } | { inlineData: { data: string; mimeType: string } })[] = [];
   let promptText = '';
 
