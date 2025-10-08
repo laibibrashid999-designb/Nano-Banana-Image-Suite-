@@ -1,0 +1,18 @@
+Safety filtering per request
+You can adjust the safety settings for each request you make to the API. When you make a request, the content is analyzed and assigned a safety rating. The safety rating includes the category and the probability of the harm classification. For example, if the content was blocked due to the harassment category having a high probability, the safety rating returned would have category equal to HARASSMENT and harm probability set to HIGH.
+
+By default, safety settings block content (including prompts) with medium or higher probability of being unsafe across any filter. This baseline safety is designed to work for most use cases, so you should only adjust your safety settings if it's consistently required for your application.
+
+The following table describes the block settings you can adjust for each category. For example, if you set the block setting to Block few for the Hate speech category, everything that has a high probability of being hate speech content is blocked. But anything with a lower probability is allowed.
+
+Threshold (Google AI Studio)	Threshold (API)	Description
+Block none	BLOCK_NONE	Always show regardless of probability of unsafe content
+Block few	BLOCK_ONLY_HIGH	Block when high probability of unsafe content
+Block some	BLOCK_MEDIUM_AND_ABOVE	Block when medium or high probability of unsafe content
+Block most	BLOCK_LOW_AND_ABOVE	Block when low, medium or high probability of unsafe content
+N/A	HARM_BLOCK_THRESHOLD_UNSPECIFIED	Threshold is unspecified, block using default threshold
+If the threshold is not set, the default block threshold is Block none (for gemini-1.5-pro-002 and gemini-1.5-flash-002 and all newer stable GA models) or Block some (in all other models) for all categories except the Civic integrity category.
+
+The default block threshold for the Civic integrity category is Block none (for gemini-2.0-flash-001 aliased as gemini-2.0-flash, gemini-2.0-pro-exp-02-05, and gemini-2.0-flash-lite) both for Google AI Studio and the Gemini API, and Block most for all other models in Google AI Studio only.
+
+You can set these settings for each request you make to the generative service. See the HarmBlockThreshold API reference for details.
